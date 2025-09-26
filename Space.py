@@ -128,5 +128,37 @@ def get_solar_flare():
         print(f"Problem fetching Solar Flare data: {e}")
         
 
-get_solar_flare()
+def main():
+    print("================================================")
+    print("|             Main API Option Menu             |")
+    print("================================================")
+    print("|                 Description:                 |")
+    print("| These chosen API's are composed of info ste- |")
+    print("| ming from astronomical data provided by NASA |")
+    print("| instruments. There are 3 different API's to  |")
+    print("| choose from: Coronal Mass Ejection, Geomagn- |")
+    print("| etic Storm, or Solar Flare. Choose between a |")
+    print("| selection: 1, 2, or 3 to procede to data.    |")
+    print("================================================")
+    print("| 1) Coronal Mass Ejection Study               |")
+    print("| 2) Geomagnetic Storm Study                   |")
+    print("| 3) Solar Flare Study                         |")
+    print("================================================")
+    user_choice = input("             Choose your study: ")
+    print("\n\n")
+
+    if user_choice == "1":
+        get_all_cleaned_CME_data()
+    elif user_choice == "2":
+        get_geo_storm()
+    elif user_choice == "3":
+        get_solar_flare()
+    else:
+        print("Invalid User Input")
+
+    
+
+if __name__ == "__main__":
+    main()
+
 
