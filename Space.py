@@ -3,7 +3,6 @@ import json
 
 CME = "https://api.nasa.gov/DONKI/CME?startDate=yyyy-MM-dd&endDate=yyyy-MM-dd&api_key=DEMO_KEY"
 GEO_STORM = "https://api.nasa.gov/DONKI/GST?startDate=yyyy-MM-dd&endDate=yyyy-MM-dd&api_key=DEMO_KEY"
-INTERP_SHOCK = "https://api.nasa.gov/DONKI/IPS?startDate=yyyy-MM-dd&endDate=yyyy-MM-dd&location=LOCATION&catalog=CATALOG&api_key=DEMO_KEY"
 SOLAR_FLARE = "https://api.nasa.gov/DONKI/FLR?startDate=yyyy-MM-dd&endDate=yyyy-MM-dd&api_key=DEMO_KEY"
 
 
@@ -33,9 +32,7 @@ def get_all_cleaned_CME_data():
                     analyses_3 = list["isEarthMinorImpact"]
                     analyses_4 = list["cmeIDs"]
                     analyses_5 = list["impactList"]
-                    #print(f'Is Minor Impact: {list["isMinorImpact"]}')
-                    #print(f'Location: {list["location"]}')
-                    #print(f'Arrival Time: {list["arrivalTime"]}')
+            
         print("                 CME DATA")
         print("===========================================\n")
         print(f"Activity ID: {activityID}")
@@ -62,13 +59,47 @@ def get_all_cleaned_CME_data():
 
 
 def get_geo_storm():
-    response = requests.get(GEO_STORM)
+    try:
+        with open("CME.json", 'r') as f:
+            geo = json.load(f)
+        for item in geo:
+            gstID = item.get("gstID")
+            startTime = item.get("startTime")
+            allkpIndex = item.get("allKpIndex")
+            event = item.get("linkedEvents")
+            submission_time = item.get("submissionTime")
+            versionID = item.get("versionID")
+            notif = item.get("sentNotifications")
+
+        print("                 CME DATA")
+        print("===========================================\n")
+        print(f"gstID: {gstID}")
+        print(f"Start Time: {startTime}")
+        print(f"All Kp Indeces: {allkpIndex}")
+        print(f"Linked Events: {event}")
+        print(f"Submission Time: {submission_time}")
+        print(f"Version ID: {versionID}")
+        print(f"Sent Notifications: {notif}")
+            
+    except requests.RequestException as e:
+        print(f"Problem fetching Geo Storm data: {e}")
+
+
+def get_solar_flare():
+    response = requests.get(SOLAR_FLARE)
+    data = response.json()
+
+    filename = "SOLAR.json"
+    with open(filename, 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=4, ensure_ascii=False)
+
+get_solar_flare()
+
+'''
+response = requests.get(GEO_STORM)
     data = response.json()
 
     filename = "GEO.json"
     with open(filename, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
-
-
-get_geo_storm()
-
+        '''
