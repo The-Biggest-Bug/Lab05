@@ -60,7 +60,7 @@ def get_all_cleaned_CME_data():
 
 def get_geo_storm():
     try:
-        with open("CME.json", 'r') as f:
+        with open("GEO.json", 'r') as f:
             geo = json.load(f)
         for item in geo:
             gstID = item.get("gstID")
@@ -71,7 +71,7 @@ def get_geo_storm():
             versionID = item.get("versionID")
             notif = item.get("sentNotifications")
 
-        print("                 CME DATA")
+        print("                 GEO DATA")
         print("===========================================\n")
         print(f"gstID: {gstID}")
         print(f"Start Time: {startTime}")
@@ -86,20 +86,47 @@ def get_geo_storm():
 
 
 def get_solar_flare():
-    response = requests.get(SOLAR_FLARE)
-    data = response.json()
+    try:
+        with open("CME.json", 'r') as f:
+            data = json.load(f)
+        for item in data:
+            flrItem = item.get("flrID")
+            catalog = item.get("catalog")
+            instruments = item.get("instruments")
+            beginTime = item.get("beginTime")
+            peakTime = item.get("peakTime")
+            endTime = item.get("endTime")
+            classType = item.get("classType")
+            sourceLocation = item.get("sourceLocation")
+            activeRegionNum = item.get("activeRegionNum")
+            note = item.get("note")
+            submissionTime = item.get("submissionTime")
+            versionId = item.get("versionId")
+            link = item.get("link")
+            linkedEvents = item.get("linkedEvents")
+            sentNotifications = item.get("sentNotifications")
 
-    filename = "SOLAR.json"
-    with open(filename, 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=4, ensure_ascii=False)
+        print("             SOLAR FLARE DATA")
+        print("============================================\n")
+        print(f"Flare Item: {flrItem}")
+        print(f"Catalog: {catalog}")
+        print(f"Instruments (display name): {instruments}")
+        print(f"Flare Begin Time: {beginTime}")
+        print(f"Peak Flare Time: {peakTime}")
+        print(f"Flare End Time: {endTime}")
+        print(f"Class Type: {classType}")
+        print(f"Source Loaction: {sourceLocation}")
+        print(f"Active Region: {activeRegionNum}")
+        print(f"Note: {note}")
+        print(f"Submission Time: {submissionTime}")
+        print(f"Version ID: {versionId}")
+        print(f"Link: {link}")
+        print(f"Linked Events: {linkedEvents}")
+        print(f"Sent Notifications: {sentNotifications}\n")
+
+    except requests.RequestException as e:
+        print(f"Problem fetching Solar Flare data: {e}")
+        
 
 get_solar_flare()
 
-'''
-response = requests.get(GEO_STORM)
-    data = response.json()
-
-    filename = "GEO.json"
-    with open(filename, 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=4, ensure_ascii=False)
-        '''
